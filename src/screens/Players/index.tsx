@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Alert, FlatList } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 
@@ -41,6 +41,7 @@ export function Players() {
     }
     try {
       await playerAddByGroup(newPlayer, group);
+      fetchPlayersbyTeam();
  
     } catch (error) {
       if(error instanceof AppError){
@@ -52,7 +53,7 @@ export function Players() {
     }
   }
   
-  async function fetchplayersbyTeam(){
+  async function fetchPlayersbyTeam(){
     try{
       const playersByTeam = await playergetByGroupAndteam(group, team);
       setPlayers(playersByTeam)
@@ -62,6 +63,10 @@ export function Players() {
       throw error;
     }
   }
+
+  useEffect(() => {
+    fetchPlayersbyTeam();
+  },[team]);
 
   return(
     <Container>
@@ -103,10 +108,10 @@ export function Players() {
 
       <FlatList
         data={players}
-        keyExtractor={item => item}
+        keyExtractor={item => item.name}
         renderItem={({ item }) => (
           <PlayerCard 
-            name={item}
+            name={item.name}
             onRemove={() => {}}
           />
         )}
