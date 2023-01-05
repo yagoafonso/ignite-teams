@@ -30,4 +30,4 @@ export const Icon = styled(UsersThree).attrs(({ theme }) => ({
   weight: 'fill'
 }))`
   margin-right: 20px;
-`
+`;
